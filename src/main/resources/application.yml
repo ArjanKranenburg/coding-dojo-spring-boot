@@ -1,1 +1,23 @@
 
+spring:
+  application:
+    name: weather
+  datasource:
+    url: jdbc:postgresql://localhost:5432/awk_test_db
+    username: weather-app
+    password: secret-password
+    initialization-mode: always
+    initialize: true
+    driver-class-name: org.postgresql.Driver
+    schema: classpath:/data/schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+open-weather:
+  url-base: https://api.openweathermap.org/data/2.5/weather
+  api-key: secret
+  language: en
+
