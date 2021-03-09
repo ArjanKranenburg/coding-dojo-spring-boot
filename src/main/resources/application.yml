@@ -3,7 +3,7 @@ spring:
   application:
     name: weather
   datasource:
-    url: jdbc:postgresql://localhost:5432/awk_test_db
+    url: jdbc:postgresql://localhost:5432/weather_db
     username: weather-app
     password: secret-password
     initialization-mode: always
@@ -17,7 +17,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 open-weather:
-  url-base: https://api.openweathermap.org/data/2.5/weather
+  uri-base: https://api.openweathermap.org
+  uri-string: data/2.5/weather
   api-key: secret
   language: en
-
+server:
+  error:
+    include-message: always

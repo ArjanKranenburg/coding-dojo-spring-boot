@@ -2,6 +2,8 @@ package com.assignment.weather.dto;
 
 import javax.persistence.*;
 
+import java.util.Formatter;
+
 import static java.util.Objects.requireNonNull;
 
 @Entity
@@ -18,7 +20,7 @@ public class WeatherReport {
 
     private Double temperature;
 
-    private Integer utcTimestamp;
+    private Long utcTimestamp;
 
     public Integer getId() {
         return id;
@@ -44,11 +46,15 @@ public class WeatherReport {
         this.temperature = requireNonNull(temperature);
     }
 
-    public Integer getUtcTimestamp() {
+    public Long getUtcTimestamp() {
         return utcTimestamp;
     }
 
-    public void setUtcTimestamp(Integer utcTimestamp) {
+    public void setUtcTimestamp(Long utcTimestamp) {
         this.utcTimestamp = utcTimestamp;
+    }
+
+    public String toString() {
+        return String.format("%s: %s°C", location, temperature);
     }
 }

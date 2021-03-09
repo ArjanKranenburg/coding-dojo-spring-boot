@@ -5,11 +5,12 @@ import com.assignment.weather.dto.WeatherReport;
 import com.assignment.weather.service.WeatherService;
 import com.assignment.weather.service.openweather.model.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriBuilder;
+
+import java.net.URI;
 
 import static com.assignment.weather.dto.builders.LocationBuilder.locationBuilder;
 import static com.assignment.weather.dto.builders.WeatherReportBuilder.weatherReportBuilder;
@@ -18,24 +19,21 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class OpenWeather implements WeatherService {
 
-    private final UrlBuilder urlBuilder;
+    private final UriBuilder uriBuilder;
 
     private final RestTemplate restTemplate;
 
     @Autowired
-    public OpenWeather(UrlBuilder urlBuilder) {
-        this.urlBuilder = requireNonNull(urlBuilder);
-        this.restTemplate = new RestTemplate();
+    public OpenWeather(UriBuilder uriBuilder, RestTemplate restTemplate) {
+        this.uriBuilder = requireNonNull(uriBuilder);
+        this.restTemplate = requireNonNull(restTemplate);
     }
 
     public WeatherReport getWeather(String location) {
-        String url = urlBuilder.Build(requireNonNull(location));
-        ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(url, WeatherResponse.class);
-        if (! response.getStatusCode().is2xxSuccessful()) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error from OpenWeather: " + response.getStatusCode());
-        }
-
+        URI uri = uriBuilder
+                .queryParam("q", requireNonNull(location))
+                .build();
+        ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(uri, WeatherResponse.class);
         return mapper(requireNonNull(response.getBody()));
     }
 

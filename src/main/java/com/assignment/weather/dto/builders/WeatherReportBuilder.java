@@ -10,7 +10,7 @@ public class WeatherReportBuilder {
 
     private Double temperature;
 
-    private Integer utcTimestamp;
+    private Long utcTimestamp;
 
     static public WeatherReportBuilder weatherReportBuilder() {
         return new WeatherReportBuilder();
@@ -26,7 +26,7 @@ public class WeatherReportBuilder {
         return this;
     }
 
-    public WeatherReportBuilder withUtcTimestamp(Integer utcTimestamp) {
+    public WeatherReportBuilder withUtcTimestamp(Long utcTimestamp) {
         this.utcTimestamp = requireNonNull(utcTimestamp);
         return this;
     }

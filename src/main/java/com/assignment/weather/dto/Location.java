@@ -38,4 +38,8 @@ public class Location {
     public void setCountry(String country) {
         this.country = requireNonNull(country);
     }
+
+    public String toString() {
+        return String.format("%s, %s", name, country);
+    }
 }

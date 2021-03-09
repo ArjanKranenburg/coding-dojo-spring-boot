@@ -1,6 +1,6 @@
 package com.assignment.weather.service;
 
-import com.assignment.weather.controller.reportsController;
+import com.assignment.weather.controller.ReportsController;
 import com.assignment.weather.dto.Location;
 import com.assignment.weather.dto.LocationAlias;
 import com.assignment.weather.dto.WeatherReport;
@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.assignment.weather.dto.builders.LocationAliasBuilder.locationAliasBuilder;
 import static java.util.Objects.requireNonNull;
 
 @Service
 public class WeatherReportCachingService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(reportsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportsController.class);
     private static final int TEN_MINUTES_IN_SECONDS = 10*60;
 
     private final LocationsRepository locationsRepository;
@@ -44,9 +45,9 @@ public class WeatherReportCachingService {
         LOGGER.info("getCurrentWeatherReportForCity( {} )", alias);
         Optional<LocationAlias> locationAlias = aliasesRepository.findByAlias(alias);
         if (locationAlias.isPresent()) {
-            List<WeatherReport> reports = reportsRepository.findAllByLocationId(locationAlias.get().getCity().getId())
+            List<WeatherReport> reports = reportsRepository.findAllByLocationId(locationAlias.get().getLocation().getId())
                     .stream()
-                    .filter(report -> report.getUtcTimestamp()>Instant.now().getEpochSecond()-TEN_MINUTES_IN_SECONDS) // Will stop working in 2038
+                    .filter(report -> report.getUtcTimestamp()>Instant.now().getEpochSecond()-TEN_MINUTES_IN_SECONDS)
                     .collect(Collectors.toList());
             if (!reports.isEmpty()) {
                 if ( reports.size() > 1 ) LOGGER.warn("{} reports stored for the last 10 minutes. Taking the first...", reports.size());
@@ -57,21 +58,22 @@ public class WeatherReportCachingService {
         WeatherReport report = weatherService.getWeather(alias);
 
         if ( locationAlias.isEmpty() ) storeNewAlias(alias, report.getLocation());
-        updateReport(report);
+        saveReport(report);
         return report;
     }
 
-    private void updateReport(WeatherReport report) {
-        if ( !reportsRepository.exists(Example.of(report)) ) reportsRepository.save(report);
-    }
-
     private void storeNewAlias(String alias, Location location) {
-        LOGGER.info("storeNewAlias( {}, {} )",alias, location.getName());
+        LOGGER.info("storeNewAlias( {}, {} )", alias, location);
         if ( !locationsRepository.exists(Example.of(location)) ) locationsRepository.save(location);
-        LocationAlias newLocationAlias = new LocationAlias();
-        newLocationAlias.setAlias(alias);
-        newLocationAlias.setCity(location);
+        LocationAlias newLocationAlias = locationAliasBuilder()
+                .withAlias(alias)
+                .withLocation(location)
+                .build();
         aliasesRepository.save(newLocationAlias);
     }
 
+    private void saveReport(WeatherReport report) {
+        LOGGER.info("saveReport( {} )", report);
+        if ( !reportsRepository.exists(Example.of(report)) ) reportsRepository.save(report);
+    }
 }

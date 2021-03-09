@@ -34,11 +34,11 @@ public class LocationAlias {
         this.alias = requireNonNull(alias);
     }
 
-    public Location getCity() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setCity(Location location) {
+    public void setLocation(Location location) {
         this.location = requireNonNull(location);
     }
 }

@@ -10,12 +10,12 @@ import static java.util.Objects.requireNonNull;
 
 @RestController
 @RequestMapping("/reports")
-public class reportsController {
+public class ReportsController {
 
     private final WeatherReportCachingService weatherReportCachingService;
 
     @Autowired
-    public reportsController(final WeatherReportCachingService weatherReportCachingService) {
+    public ReportsController(final WeatherReportCachingService weatherReportCachingService) {
         this.weatherReportCachingService = requireNonNull(weatherReportCachingService);
     }
 
