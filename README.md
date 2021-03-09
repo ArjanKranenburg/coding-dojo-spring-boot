@@ -1,22 +1,43 @@
-Spring Boot Coding Dojo
+Weather Application
 ---
 
-Welcome to the Spring Boot Coding Dojo!
 
 ### Introduction
 
-This is a simple application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database. The current implementation has quite a few problems making it a non-production ready product.
+This is a simple application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database.
+When the same request is done withing 10 minutes, the report is fetched from the database and returned.
 
-### The task
+### Initial setup
+The Weather App runs on Java 11, which must be installed on your system.
 
-As the new engineer leading this project, your first task is to make it production-grade, feel free to refactor any piece
-necessary to achieve the goal.
+Current application configuration expects PostgreSQL database named `weather_db` to be available at `localhost:5432` with user `weather-app` and password `secret-password`. 
+The database configuration can be changed in `src/main/resources/application.yml`.
 
-### How to deliver the code
+### Running the Application
+The Weather App can be started using following command:
+`mvn spring-boot:run -Dspring-boot.run.arguments=--open-weather.api-key=YOUR_API_KEY`
 
-Please send an email containing your solution with a link to a public repository.
-
->**DO NOT create a Pull Request with your solution** 
-
-### Footnote
 It's possible to generate the API key going to the [OpenWeather Sign up](https://openweathermap.org/appid) page.
+
+### Requests
+Requests (GET) can be sent to `http://localhost:8080/reports`
+
+It takes 1 parameter and will return the weather for that location:
+`location`: City, Area, or even Country (in English)
+
+### Example
+```GET http://localhost:8080/reports?location=Utrecht```
+
+will return something like:
+```
+{
+    "id": 4,
+    "location": {
+        "id": 2745909,
+        "name": "Provincie Utrecht",
+        "country": "NL"
+    },
+    "temperature": 4.61,
+    "utcTimestamp": 1615247976
+}
+```
