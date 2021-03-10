@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 @Service
 public class WeatherReportCachingService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherReportCachingService.class);
     private static final int TEN_MINUTES_IN_SECONDS = 10*60;
 
     private final LocationsRepository locationsRepository;
