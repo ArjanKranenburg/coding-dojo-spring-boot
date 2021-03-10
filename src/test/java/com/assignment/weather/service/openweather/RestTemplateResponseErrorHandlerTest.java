@@ -35,10 +35,20 @@ public class RestTemplateResponseErrorHandlerTest {
     }
 
     @Test
-    void when_response_has_an_error_then_hasError_is_true() throws IOException {
+    void when_response_has_a_client_error_then_hasError_is_true() throws IOException {
 
         // prepare
         when(httpResponseMock.getStatusCode()).thenReturn(HttpStatus.NOT_FOUND);
+
+        // act & check
+        assertTrue(errorHandler.hasError(httpResponseMock));
+    }
+
+    @Test
+    void when_response_has_a_server_error_then_hasError_is_true() throws IOException {
+
+        // prepare
+        when(httpResponseMock.getStatusCode()).thenReturn(HttpStatus.INTERNAL_SERVER_ERROR);
 
         // act & check
         assertTrue(errorHandler.hasError(httpResponseMock));
