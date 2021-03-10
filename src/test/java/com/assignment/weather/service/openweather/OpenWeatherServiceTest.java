@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class OpenWeatherTest {
+public class OpenWeatherServiceTest {
     final static String SEARCH_LOCATION = "Lutjewinkel";
 
     @Mock
@@ -33,11 +33,11 @@ public class OpenWeatherTest {
     @Mock
     private ResponseEntity<WeatherResponse> responseEntityMock;
 
-    private OpenWeather service;
+    private OpenWeatherService service;
 
     @BeforeEach
     public void initialize() {
-        service = new OpenWeather(uriBuilder, restTemplate);
+        service = new OpenWeatherService(uriBuilder, restTemplate);
 
         when(uriBuilder.queryParam(anyString(), ArgumentMatchers.<Class<?>>any())).thenReturn(uriBuilder);
         when(uriBuilder.build()).thenReturn(URI.create("testUri"));

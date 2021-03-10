@@ -17,14 +17,14 @@ import static com.assignment.weather.dto.builders.WeatherReportBuilder.weatherRe
 import static java.util.Objects.requireNonNull;
 
 @Service
-public class OpenWeather implements WeatherService {
+public class OpenWeatherService implements WeatherService {
 
     private final UriBuilder uriBuilder;
 
     private final RestTemplate restTemplate;
 
     @Autowired
-    public OpenWeather(UriBuilder uriBuilder, RestTemplate restTemplate) {
+    public OpenWeatherService(UriBuilder uriBuilder, RestTemplate restTemplate) {
         this.uriBuilder = requireNonNull(uriBuilder);
         this.restTemplate = requireNonNull(restTemplate);
     }
