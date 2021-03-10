@@ -4,7 +4,7 @@ Weather Application
 
 ### Introduction
 
-This is a simple application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database.
+This is a caching application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database.
 When the same request is done withing 10 minutes, the report is fetched from the database and returned.
 
 ### Initial setup
@@ -15,7 +15,7 @@ The database configuration can be changed in `src/main/resources/application.yml
 
 ### Running the Application
 The Weather App can be started using following command:
-`mvn spring-boot:run -Dspring-boot.run.arguments=--open-weather.api-key=YOUR_API_KEY`
+`mvnw spring-boot:run -Dspring-boot.run.arguments=--open-weather.api-key=YOUR_API_KEY`
 
 It's possible to generate the API key going to the [OpenWeather Sign up](https://openweathermap.org/appid) page.
 
